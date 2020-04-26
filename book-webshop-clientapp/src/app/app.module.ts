@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { BookCategoryComponent } from './components/book-category/book-category.component';
 
 const routes: Routes = [
   { path: 'books', component: BookListComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, BookListComponent, PageNotFoundComponent],
+  declarations: [AppComponent, BookListComponent, PageNotFoundComponent, BookCategoryComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent],
