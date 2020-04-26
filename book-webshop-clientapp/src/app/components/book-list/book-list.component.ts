@@ -44,10 +44,10 @@ export class BookListComponent implements OnInit {
   }
 
   handleListBooks() {
-    const hasCategoryId: boolean = this.activatedRoute.snapshot.paramMap.has('id');
+    const hasCategoryId: boolean = this.activatedRoute.snapshot.paramMap.has('categoryId');
 
     if (hasCategoryId) {
-      this.currentCategoryId = +this.activatedRoute.snapshot.paramMap.get('id');
+      this.currentCategoryId = +this.activatedRoute.snapshot.paramMap.get('categoryId');
     } else {
       this.currentCategoryId = 1;
     }

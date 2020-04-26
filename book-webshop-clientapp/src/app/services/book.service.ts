@@ -34,6 +34,12 @@ export class BookService {
     const searchUrl = `${this.baseUrl}/search/searchbykeyword?name=${keyword}`;
     return this.getBooksList(searchUrl);
   }
+
+  getBook(bookId: number): Observable<Book> {
+    const bookDetailsUrl = `${this.baseUrl}/${bookId}`;
+
+    return this.http.get<Book>(bookDetailsUrl);
+  }
 }
 
 interface GetResponseBooks {
