@@ -12,9 +12,14 @@ export class BookService {
 
   constructor(private http: HttpClient) {}
 
-  getBooks(): Observable<Book[]> {
-    return this.http.get<GetResponseBooks>(`${this.apiUrl}?`).pipe(map((response) => response._embedded.books));
+  getBooks(categoryId: number): Observable<Book[]> {
+    const searchUrl = `${this.apiUrl}/search/categoryid?id=${categoryId}`;
+    return this.http.get<GetResponseBooks>(searchUrl).pipe(map((response) => response._embedded.books));
   }
+
+  // getBooks(): Observable<Book[]> {
+  //  return this.http.get<GetResponseBooks>(`${this.apiUrl}?`).pipe(map((response) => response._embedded.books));
+  // }
 }
 
 interface GetResponseBooks {
