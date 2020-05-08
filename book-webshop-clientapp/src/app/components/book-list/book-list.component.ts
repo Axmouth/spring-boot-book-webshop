@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/common/book';
-import { BookService } from '../../services/book.service';
+import { BookService, GetResponseBooks } from '../../services/book.service';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-book-list',
@@ -10,11 +11,24 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit {
-  books: Book[];
+  books: Book[] = [];
   currentCategoryId: number;
-  searchMode: boolean;
+  searchMode = false;
+  previousCategoryId = 1;
 
-  constructor(private bookService: BookService, private activatedRoute: ActivatedRoute) {}
+  // pagination
+  currentPage = 1;
+  pageSize = 5;
+  totalElements = 0;
+
+  constructor(
+    private bookService: BookService,
+    private activatedRoute: ActivatedRoute,
+    private ngbPaginConfig: NgbPaginationConfig,
+  ) {
+    ngbPaginConfig.maxSize = 3;
+    ngbPaginConfig.boundaryLinks = true;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(() => {
@@ -26,21 +40,20 @@ export class BookListComponent implements OnInit {
     const keyword: string = this.activatedRoute.snapshot.paramMap.get('keyword');
 
     this.bookService
-      .searchBooks(keyword)
+      .searchBooks(keyword, this.currentPage - 1, this.pageSize)
       .pipe(
         map((data) => {
           const books = [];
-          for (const book of data) {
+          for (const book of data._embedded.books) {
             const newBook = book;
             newBook.unitPrice = book.unitPrice / 100;
             books.push(newBook);
           }
-          return books;
+          data._embedded.books = books;
+          return data;
         }),
       )
-      .subscribe((books) => {
-        this.books = books;
-      });
+      .subscribe(this.processPaginate());
   }
 
   handleListBooks() {
@@ -52,22 +65,28 @@ export class BookListComponent implements OnInit {
       this.currentCategoryId = 1;
     }
 
+    // setting the page number to 1 when changing category
+    if (this.previousCategoryId !== this.currentCategoryId) {
+      this.currentPage = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+
     this.bookService
-      .getBooks(this.currentCategoryId)
+      .getBooks(this.currentCategoryId, this.currentPage - 1, this.pageSize)
       .pipe(
         map((data) => {
           const books = [];
-          for (const book of data) {
+          for (const book of data._embedded.books) {
             const newBook = book;
             newBook.unitPrice = book.unitPrice / 100;
             books.push(newBook);
           }
-          return books;
+          data._embedded.books = books;
+          return data;
         }),
       )
-      .subscribe((books) => {
-        this.books = books;
-      });
+      .subscribe(this.processPaginate());
   }
 
   listBooks() {
@@ -80,5 +99,20 @@ export class BookListComponent implements OnInit {
       // List books based on category
       this.handleListBooks();
     }
+  }
+
+  updatePageSize(pageSize: number) {
+    this.pageSize = pageSize;
+    this.currentPage = 1;
+    this.listBooks();
+  }
+
+  processPaginate() {
+    return (data: GetResponseBooks) => {
+      this.books = data._embedded.books;
+      this.currentPage = data.page.number + 1;
+      this.totalElements = data.page.totalElements;
+      this.pageSize = data.page.size;
+    };
   }
 }

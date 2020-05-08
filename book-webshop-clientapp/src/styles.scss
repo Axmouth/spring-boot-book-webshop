@@ -31,3 +31,10 @@ html {
     bottom: 10px;
     height: 10rem;
 }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+a {
+    cursor: pointer;
+}

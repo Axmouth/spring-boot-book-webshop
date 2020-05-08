@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { BookCategoryComponent } from './components/book-category/book-category.component';
 import { SearchComponent } from './components/search/search.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: 'books', component: BookListComponent },
@@ -29,7 +30,7 @@ const routes: Routes = [
     SearchComponent,
     BookDetailsComponent,
   ],
-  imports: [BrowserModule, HttpClientModule, FormsModule, RouterModule.forRoot(routes)],
+  imports: [BrowserModule, HttpClientModule, FormsModule, RouterModule.forRoot(routes), NgbModule],
   providers: [],
   bootstrap: [AppComponent],
 })
