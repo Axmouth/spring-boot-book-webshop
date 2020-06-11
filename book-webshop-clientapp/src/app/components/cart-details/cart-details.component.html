@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-md-3">
+    <app-book-category></app-book-category>
+  </div>
+  <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-12">
+        <div *ngIf="cartItems.length > 0">
+          <table class="table table-bordered">
+            <thead class="bg-dark text-light">
+              <th width="20%">Book Image</th>
+              <th width="50%">Book Detail</th>
+              <th width="30%"></th>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let cartItem of cartItems">
+                <td>
+                  <img [src]="cartItem.imageUrl" class="img-responsive" width="150" height="200" />
+                </td>
+                <td>
+                  <p>{{ cartItem.name }}</p>
+                  <p>{{ cartItem.unitPrice | currency: 'EUR' }}</p>
+                </td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p>
+                        Quantity:
+                        <span class="float-right pointer text-danger" (click)="remove(cartItem)">
+                          <i class="fas fa-trash-alt"></i>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="col-md-4">
+                      <button class="btn btn-primary btn-sm float-left" (click)="incrementQuantity(cartItem)">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <br />
+                    <div class="col-md-4">{{ cartItem.quantity }}</div>
+                    <div class="col-md-4">
+                      <button class="btn btn-primary btn-sm float-right" (click)="decrementQuantity(cartItem)">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                      <p>Subtotal: {{ cartItem.quantity * cartItem.unitPrice | currency: 'EUR' }}</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2"></td>
+                <td class="font-weight-bold">
+                  <p>Total quantity: {{ totalQuantity }}</p>
+                  <p>Shipping: FREE</p>
+                  <p>Total Price: {{ totalPrice | currency: 'EUR' }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="cartItems.length == 0" class="alert alert-warning" role="alert">
+          Your Cart is Empty
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

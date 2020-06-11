@@ -35,6 +35,7 @@ html {
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
-a {
+a,
+.pointer {
     cursor: pointer;
 }

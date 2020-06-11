@@ -1,3 +1,7 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8" size="default" type="ball-spin-clockwise">
+  <p style="color: white;">Please Wait</p>
+</ngx-spinner>
+
 <div class="row">
   <div class="col-lg-3">
     <app-book-category></app-book-category>
@@ -23,47 +27,50 @@
           </div>
           <div class="card-footer">
             <!--small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small-->
-            <button class="btn btn-primary float-right">Add to Cart</button>
+            <button class="btn btn-primary float-right" (click)="addToCart(book)">Add to Cart</button>
           </div>
         </div>
       </div>
-      <div *ngIf="books?.length === 0" class="col-md-12 alert alert-warning mt-3">No Books Found</div>
+      <div *ngIf="books?.length === 0 && !books" class="col-md-12 alert alert-warning mt-3">No Books Found</div>
     </div>
-    <!-- /.row -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-3">
-            <span class="mr-2">
-              Page Size:
-            </span>
-          </div>
-          <div class="col-md-9">
-            <select (change)="updatePageSize($event.target.value)" class="form-control-sm" style="width: 20%;">
-              <option selected>5</option>
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-            </select>
+
+    <div *ngIf="books?.length > 0">
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-3">
+              <span class="mr-2">
+                Page Size:
+              </span>
+            </div>
+            <div class="col-md-9">
+              <select (change)="updatePageSize($event.target.value)" class="form-control-sm" style="width: 20%;">
+                <option selected>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <ngb-pagination
-          [(page)]="currentPage"
-          [pageSize]="pageSize"
-          [collectionSize]="totalElements"
-          (pageChange)="listBooks()"
-          class="d-flex justify-content-end"
-        >
-          <ng-template ngbPaginationPrevious>Prev</ng-template>
-          <ng-template ngbPaginationNext>Next</ng-template>
-          <ng-template ngbPaginationFirst>First</ng-template>
-          <ng-template ngbPaginationLast>Last</ng-template>
-        </ngb-pagination>
+        <div class="col-md-6">
+          <ngb-pagination
+            [(page)]="currentPage"
+            [pageSize]="pageSize"
+            [collectionSize]="totalElements"
+            (pageChange)="listBooks()"
+            class="d-flex justify-content-end"
+          >
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+            <ng-template ngbPaginationFirst>First</ng-template>
+            <ng-template ngbPaginationLast>Last</ng-template>
+          </ngb-pagination>
+        </div>
       </div>
     </div>
+    <!-- /.col-lg-9 -->
   </div>
-  <!-- /.col-lg-9 -->
+  <!-- /.row -->
 </div>
-<!-- /.row -->
